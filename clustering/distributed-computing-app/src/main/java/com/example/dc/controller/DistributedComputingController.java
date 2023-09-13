@@ -3,10 +3,14 @@ package com.example.dc.controller;
 import com.example.dc.response.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.URI;
+
+import static com.example.dc.constants.MessagingConstants.*;
 
 /**
  * @author irfan.nagoo
@@ -20,25 +24,26 @@ public class DistributedComputingController {
     /**
      * Sample API to create HTTP session for cluster replication use case.
      *
-     * <br><br><u>Reference:</u> https://tomcat.apache.org/tomcat-9.0-doc/cluster-howto.html
+     * <br><u>Reference:</u>
+     * <a href="https://tomcat.apache.org/tomcat-9.0-doc/cluster-howto.html">Apache Tomcat 9.0</a>
      *
      * @param request - HTTP Request
      * @return Response with status
      */
     @PostMapping("/session/create")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public BaseResponse createSession(HttpServletRequest request) {
+    public ResponseEntity<BaseResponse> createSession(HttpServletRequest request) {
         log.info("Start creating session");
         if (request.getSession(false) == null) {
             log.info("Creating session");
             HttpSession session = request.getSession();
             session.setAttribute("mode", "replication");
-            return new BaseResponse(HttpStatus.CREATED.name(), String.format("Session Successfully Created with Id[%s]",
-                    session.getId()));
+            return ResponseEntity.created(URI.create("uri")).body(new BaseResponse(HttpStatus.CREATED.name(),
+                    String.format(SUCCESS_MSG, session.getId())));
         } else {
             String id = request.getSession().getId();
             log.info("Session already created with Id[{}]", id);
-            return new BaseResponse(HttpStatus.OK.name(), String.format("Session Already Exists with Id[%s]", id));
+            return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.name(), String.format(ALREADY_EXISTS_MSG, id)));
         }
     }
 
@@ -50,15 +55,16 @@ public class DistributedComputingController {
      */
     @DeleteMapping("/session/invalidate")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public BaseResponse invalidateSession(HttpServletRequest request) {
+    public ResponseEntity<BaseResponse> invalidateSession(HttpServletRequest request) {
         log.info("Start invalidating session");
         if (request.getSession(false) == null) {
             log.info("Session does not exist");
-            return new BaseResponse(HttpStatus.NOT_FOUND.name(), "Session does not Exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new BaseResponse(HttpStatus.NOT_FOUND.name(), NOT_EXISTS_MSG));
         } else {
             request.getSession().invalidate();
             log.info("Session destroyed ");
-            return new BaseResponse(HttpStatus.OK.name(), "Session Invalidated Successfully");
+            return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.name(), INVALIDATED_MSG));
         }
     }
 
