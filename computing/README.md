@@ -1,6 +1,6 @@
 # computing
 
-![disctibuted-computing](https://github.com/raptor-23/distributed-computing/assets/142492599/31160b43-12ae-4036-8316-2af5ac7f6798)
+![dc](https://github.com/raptor-23/distributed-computing/assets/142492599/308105cc-900a-43b0-ba52-37d33776007c)
 
 
 ## Intoduction
@@ -13,7 +13,14 @@ The diagram above demonstrates a typical Microservice architecture (consisting o
 
 ## Backend Microservices
 
-The backend Microservice layer could be implemented in variety of languages Java (SpringBoot, Quarkus etc.), Go (GoMicrom GoKit), NodeJS, Python (Flask), C# etc. and this layer performs major contribution to distributed computing. As shown in the diagram, there are lot of other components like distributed caches, search solutions, messaging brokers, streaming platforms etc. which are an extension to the Microservices platform.
+The backend Microservice layer could be implemented in variety of languages like:
+  1. Java (SpringBoot, Quarkus etc.),
+  2. Go (GoMicro GoKit),
+  3. NodeJS
+  4. Python (Flask, Django)
+  5. C# etc.
+
+This layer performs major contribution to distributed computing. As shown in the diagram, there are lot of other components like distributed caches, search solutions, messaging brokers, streaming platforms etc. which are an extension to the Microservices platform.
 
 ## Databases
 
